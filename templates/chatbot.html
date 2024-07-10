@@ -4,60 +4,86 @@
 <style>
   body, html {
     height: 100%;
-    background-color: #1e1e1e; /* Changed background color to dark grey */
+    margin: 0;
+    background-color: #1e1e1e; /* Dark grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .chat-container {
+    width: 90%;
+    max-width: 600px;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8f9fa; /* Light grey background for chat box */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    text-align: center;
   }
 
   .messages-box {
     flex: 1;
+    padding: 20px;
     overflow-y: auto;
-  }
-
-  .messages-list {
-    padding-left: 0;
   }
 
   .message {
     margin-bottom: 15px;
     list-style: none;
+    max-width: 80%;
   }
 
   .message-text {
     padding: 10px;
     border-radius: 5px;
+    display: inline-block;
   }
 
   .sent {
     background-color: #dcf8c6;
     align-self: flex-end;
+    margin-left: auto;
   }
 
   .received {
     background-color: #f1f0f0;
     align-self: flex-start;
+    margin-right: auto;
   }
 
   .message-form {
     display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
     padding: 10px;
-    background-color: #f8f9fa;
+    background-color: #e9ecef;
+    border-top: 1px solid #dee2e6;
   }
 
   .message-input {
     flex: 1;
-    border-radius: 0;
-    border-right: none;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
   }
 
   .btn-send {
-    border-radius: 0;
     background-color: #007bff;
     color: white;
     border: none;
     padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
@@ -65,42 +91,49 @@
   .btn-send:hover {
     background-color: #0056b3; /* Darker shade of blue for hover effect */
   }
-
-  .chat-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="chat-container">
-  <div class="card flex-grow-1">
-    <div class="card-header bg-primary text-white">Chat</div>
-    <div class="card-body messages-box">
-      <ul class="list-unstyled messages-list">
-        <li class="message received">
-          <div class="message-text">
-            <div class="message-sender">
-              <b>AI Chatbot</b>
-            </div>
-            <div class="message-content">
-              Hi, I am your AI Chatbot, you can ask me anything.
-            </div>
+  <div class="card-header">Chat</div>
+  <div class="messages-box">
+    <ul class="list-unstyled messages-List">
+      <li class="message received">
+        <div class="message-text">
+          <div class="message-sender">
+            <b>AI Chatbot</b>
           </div>
-        </li>
-      </ul>
-    </div>
+          <div class="message-content">
+            Hi, I am your AI Chatbot, you can ask me anything.
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
-  <form class="message-form">
+  <form class="message-form" method="post">
     {% csrf_token %}
-    <div class="input-group">
-      <input type="text" class="form-control message-input" placeholder="Type your message...">
-      <div class="input-group-append">
-        <button type="submit" class="btn btn-primary btn-send">Send</button>
-      </div>
-    </div>
+    <input type="text" class="message-input" placeholder="Type your message..." name="message">
+    <button type="submit" class="btn-send">Send</button>
   </form>
 </div>
+
+<script>
+  const messageslist = document.querySelector('.messages-List');
+  const messagesform = document.querySelector('.messages-form');
+  const messagesinput = document.querySelector('.messages-input');
+
+  messagesform.addEventListener('submit',(event) =>{
+    event.preventDefault();
+
+    const message = messagesinput.value.trim();
+    if(message.length ===0){
+      return
+    }
+
+  }
+)
+
+</script>
+
 {% endblock %}
