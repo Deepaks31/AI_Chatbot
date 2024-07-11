@@ -131,6 +131,22 @@
       return
     }
 
+    const messageitem = document.createElement('li');
+    messageitem.classList.add('message'.'sent');
+    messageItem.innerHTML = `
+    <div class="message-text">
+      <div class="message-sender">
+        <b>Me</b>
+      </div>
+      <div class="message-content">
+        ${message}
+      </div>
+    </div>
+    `;
+    messageslist.append(messageitem);
+    messagesinput.value = '';
+    messageslist.scrollTop = messageslist.scrollHeight;
+
   }
 )
 
