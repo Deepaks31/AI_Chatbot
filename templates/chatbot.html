@@ -147,6 +147,15 @@
     messagesinput.value = '';
     messageslist.scrollTop = messageslist.scrollHeight;
 
+    fetch('', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        'message': message
+      })
+    })
+
   }
 )
 
