@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.http import JsonResponse
-import openai
+import openai 
 
 
-openai_api_key ='sk-proj-DiluTScfzqGnwmQJYCGoT3BlbkFJXyJvp0bILi4Oo865Ka80'
+openai_api_key ='sk-None-RDwDeqMV6mkjwefabTmYT3BlbkFJCWI5lG7TO5OIv3q2Cyo5'
 openai.api_key = openai_api_key
 
 def ask_openai(message):
