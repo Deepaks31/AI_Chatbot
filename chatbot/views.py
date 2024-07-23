@@ -5,9 +5,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import openai
 from .models import Chat
-from django.conf import settings
 
-openai.api_key = 'sk-None-4Qegi1WYLJbr2On0QwKRT3BlbkFJdLvxKJlmwUQQ7duvjrGK'
+openai.api_key = 'sk-proj-ETZxVUQNDcrVvw0DI1uKT3BlbkFJSMQYvbwnKwsHfh5XmnZS'
 
 def ask_openai(message):
     try:
@@ -23,7 +22,6 @@ def ask_openai(message):
     except Exception as e:
         return "Sorry, I'm having trouble responding right now."
 
-# Create your views here.
 def chatbot(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -80,6 +78,5 @@ def logout(request):
 
 def clear_chat(request):
     if request.method == 'POST':
-        # Clear chat history for the logged-in user
         Chat.objects.filter(user=request.user).delete()
     return redirect('chatbot') 
