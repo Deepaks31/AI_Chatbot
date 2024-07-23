@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block styles %}
+<style>
+  body {
+    background-color: #e9ecef;
+    font-family: 'Arial', sans-serif;
+  }
+  .register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .card {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    overflow: hidden;
+  }
+  .card-header {
+    background-color: #343a40;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+  }
+  .card-body {
+    padding: 30px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+  }
+  input[type=text], input[type=password] {
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    transition: border-color 0.3s;
+  }
+  input[type=text]:focus, input[type=password]:focus {
+    border-color: #80bdff;
+    outline: none;
+  }
+  button[type=submit] {
+    background-color: #343a40;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  button[type=submit]:hover {
+    background-color: #495057;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    display: none;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="register-container">
+  <div class="card">
+    <div class="card-header">Register</div>
+    <div class="card-body">
+      <div id="error-message" class="alert alert-danger" role="alert"></div>
+      <form id="register-form" method="post" onsubmit="return validateForm();">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password1">Password</label>
+          <input type="password" class="form-control" id="password1" name="password1" required>
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          <input type="password" class="form-control" id="password2" name="password2" required>
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function validateForm() {
+    var username = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
+    var password1 = document.getElementById('password1').value;
+    var password2 = document.getElementById('password2').value;
+    var errorMessage = document.getElementById('error-message');
+    
+    if (username === "" || email === "" || password1 === "" || password2 === "") {
+      errorMessage.textContent = "All fields are required.";
+      errorMessage.style.display = 'block';
+      return false;
+    }
+    
+    if (!validateEmail(email)) {
+      errorMessage.textContent = "Invalid email format.";
+      errorMessage.style.display = 'block';
+      return false;
+    }
+    
+    if (password1 !== password2) {
+      errorMessage.textContent = "Passwords do not match.";
+      errorMessage.style.display = 'block';
+      return false;
+    }
+    
+    errorMessage.style.display = 'none';
+    return true;
+  }
+
+  function validateEmail(email) {
+    var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  document.getElementById('username').addEventListener('input', function() {
+    validateField('username');
+  });
+
+  document.getElementById('email').addEventListener('input', function() {
+    validateField('email');
+  });
+
+  document.getElementById('password1').addEventListener('input', function() {
+    validateField('password1');
+  });
+
+  document.getElementById('password2').addEventListener('input', function() {
+    validateField('password2');
+  });
+
+  function validateField(fieldId) {
+    var field = document.getElementById(fieldId);
+    var errorMessage = document.getElementById('error-message');
+    
+    if (fieldId === 'email' && !validateEmail(field.value)) {
+      errorMessage.textContent = "Invalid email format.";
+      errorMessage.style.display = 'block';
+    } else if (field.value === "") {
+      errorMessage.textContent = `${field.previousElementSibling.textContent} is required.`;
+      errorMessage.style.display = 'block';
+    } else {
+      errorMessage.style.display = 'none';
+    }
+  }
+</script>
+{% endblock %}
